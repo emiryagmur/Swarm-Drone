@@ -2,16 +2,22 @@ clc;
 clear;
 close all;
 
-Temperature = 18.46;
-Battery = 78.24;
-Position = [12.34 40.33 93.26];
-Velocity = [4.56 6.75 2.54];
+Temperature = 22.34;
+Battery = 54.204;
+Position = [-12.34 -40.33 -93.02];
+Velocity = [-4.56 -8.45 -3.52];
 
 BitNumber=8;
 Scale=100;
 
-TemperatureInteger=floor(Temperature);
-TemperatureDecimal=round((Temperature-TemperatureInteger)*Scale);
+
+if Temperature >= 0
+    TemperatureInteger=floor(Temperature);
+    TemperatureDecimal=round((Temperature-TemperatureInteger)*Scale);
+else
+    TemperatureInteger=ceil(Temperature);
+    TemperatureDecimal=round((TemperatureInteger-Temperature)*Scale);
+end
 
 TemperatureInteger2Binary = dec2bin(typecast(int8(TemperatureInteger),'uint8'),8);
 TemperatureDecimal2Binary = dec2bin(TemperatureDecimal,8);
@@ -42,8 +48,13 @@ XCoordinate = Position(1);
 YCoordinate = Position(2);
 ZCoordinate = Position(3);
 
-XCoordinateInteger=floor(XCoordinate);
-XCoordinateDecimal=round((XCoordinate-XCoordinateInteger)*Scale);
+if XCoordinate >= 0
+    XCoordinatenteger=floor(XCoordinate);
+    XCoordinateDecimal=round((XCoordinate-XCoordinateInteger)*Scale);
+else
+    XCoordinateInteger=ceil(XCoordinate);
+    XCoordinateDecimal=round((XCoordinateInteger-XCoordinate)*Scale);
+end
 
 XCoordinateInteger2Binary = dec2bin(typecast(int8(XCoordinateInteger),'uint8'),8);
 XCoordinateDecimal2Binary = dec2bin(XCoordinateDecimal,8);
@@ -56,8 +67,13 @@ if length(XCoordinateDecimal2Binary)>BitNumber
 XCoordinateDecimal2Binary = XCoordinateDecimal2Binary(end-BitNumber+1:end);
 end
 
-YCoordinateInteger=floor(YCoordinate);
-YCoordinateDecimal=round((YCoordinate-YCoordinateInteger)*Scale);
+if YCoordinate >= 0
+    YCoordinatenteger=floor(YCoordinate);
+    YCoordinateDecimal=round((YCoordinate-YCoordinateInteger)*Scale);
+else
+    YCoordinateInteger=ceil(YCoordinate);
+    YCoordinateDecimal=round((YCoordinateInteger-YCoordinate)*Scale);
+end
 
 YCoordinateInteger2Binary = dec2bin(typecast(int8(YCoordinateInteger),'uint8'),8);
 YCoordinateDecimal2Binary = dec2bin(YCoordinateDecimal,8);
@@ -70,8 +86,13 @@ if length(YCoordinateDecimal2Binary)>BitNumber
 YCoordinateDecimal2Binary = YCoordinateDecimal2Binary(end-BitNumber+1:end);
 end
 
-ZCoordinateInteger=floor(ZCoordinate);
-ZCoordinateDecimal=round((ZCoordinate-ZCoordinateInteger)*Scale);
+if ZCoordinate >= 0
+    ZCoordinatenteger=floor(ZCoordinate);
+    ZCoordinateDecimal=round((ZCoordinate-ZCoordinateInteger)*Scale);
+else
+    ZCoordinateInteger=ceil(ZCoordinate);
+    ZCoordinateDecimal=round((ZCoordinateInteger-ZCoordinate)*Scale);
+end
 
 ZCoordinateInteger2Binary = dec2bin(typecast(int8(ZCoordinateInteger),'uint8'),8);
 ZCoordinateDecimal2Binary = dec2bin(ZCoordinateDecimal,8);
@@ -88,8 +109,13 @@ XVelocity = Velocity(1);
 YVelocity = Velocity(2);
 ZVelocity = Velocity(3);
 
-XVelocityInteger=floor(XVelocity);
-XVelocityDecimal=round((XVelocity-XVelocityInteger)*Scale);
+if XVelocity >= 0
+    XVelocityInteger=floor(XVelocity);
+    XVelocityDecimal=round((XVelocity-XVelocityInteger)*Scale);
+else
+    XVelocityInteger=ceil(XVelocity);
+    XVelocityDecimal=round((XVelocityInteger-XVelocity)*Scale);
+end
 
 XVelocityInteger2Binary = dec2bin(typecast(int8(XVelocityInteger),'uint8'),8);
 XVelocityDecimal2Binary = dec2bin(XVelocityDecimal,8);
@@ -102,8 +128,13 @@ if length(XVelocityDecimal2Binary)>BitNumber
 XVelocityDecimal2Binary = XVelocityDecimal2Binary(end-BitNumber+1:end);
 end
 
-YVelocityInteger=floor(YVelocity);
-YVelocityDecimal=round((YVelocity-YVelocityInteger)*Scale);
+if YVelocity >= 0
+    YVelocityInteger=floor(YVelocity);
+    YVelocityDecimal=round((YVelocity-YVelocityInteger)*Scale);
+else
+    YVelocityInteger=ceil(YVelocity);
+    YVelocityDecimal=round((YVelocityInteger-YVelocity)*Scale);
+end
 
 YVelocityInteger2Binary = dec2bin(typecast(int8(YVelocityInteger),'uint8'),8);
 YVelocityDecimal2Binary = dec2bin(YVelocityDecimal,8);
@@ -116,8 +147,13 @@ if length(YVelocityDecimal2Binary)>BitNumber
 YVelocityDecimal2Binary = YVelocityDecimal2Binary(end-BitNumber+1:end);
 end
 
-ZVelocityInteger=floor(ZVelocity);
-ZVelocityDecimal=round((ZVelocity-ZVelocityInteger)*Scale);
+if ZVelocity >= 0
+    ZVelocityInteger=floor(ZVelocity);
+    ZVelocityDecimal=round((ZVelocity-ZVelocityInteger)*Scale);
+else
+    ZVelocityInteger=ceil(ZVelocity);
+    ZVelocityDecimal=round((ZVelocityInteger-ZVelocity)*Scale);
+end
 
 ZVelocityInteger2Binary = dec2bin(typecast(int8(ZVelocityInteger),'uint8'),8);
 ZVelocityDecimal2Binary = dec2bin(ZVelocityDecimal,8);
@@ -160,10 +196,11 @@ phi = MessageSignal*(-pi/2) + pi/2;
 %fprintf('Phase Values:\n');
 %disp(phi)
 
+freq = -1:2/length(t):1-1/length(t);
 PhaseCodedSignal = sin(2*pi*fp*t + phi);
 
 figure;
-plot(t(1:2000), PhaseCodedSignal(1:2000),'LineWidth',1.2);
+plot(t, PhaseCodedSignal,'LineWidth',1.2);
 title('Phase Coded Signal - Time Domain');
 xlabel('Time (s)');
 ylabel('Amplitude');
@@ -172,7 +209,7 @@ set(gca,'FontSize',12);
 
 fftOfPhaseCodedSignal = fftshift(fft(PhaseCodedSignal));
 figure;
-plot(abs(fftOfPhaseCodedSignal),'LineWidth',1.2);
+plot(freq, abs(fftOfPhaseCodedSignal),'LineWidth',1.2);
 title('Phase Coded Signal - Frequency Domain');
 xlabel('Frequency');
 ylabel('Magnitude');
@@ -180,29 +217,43 @@ grid on;
 set(gca,'FontSize',12);
 
 fc = 20000;
-
-Carrier = sin(2*pi*fc*t);
+% Sen burayi sin yapmissin, cos olmali
+Carrier = cos(2*pi*fc*t);
 
 %figure;
 %plot(t,Carrier);
 %title('Carrier - Time Domain');
+figure;
+plot(abs(fftshift(fft(Carrier))));
+title('Carrier - Frequency Domain');
 
-%figure;
-%plot(abs(fft(Carrier)));
-%title('Carrier - Frequency Domain');
+figure;
+plot(freq,fftshift(abs(fft(Carrier))));
+title('Carrier - Frequency Domain');
 
 TransmittedSignal = PhaseCodedSignal .* Carrier;
 
-figure;
-plot(t(1:2000), TransmittedSignal(1:2000),'LineWidth',1.2);
+figure(99);
+plot(t, TransmittedSignal,'LineWidth',1.2);
 title('Final Transmitted Signal - Time Domain');
 xlabel('Time (s)');
 ylabel('Amplitude');
 grid on;
 set(gca,'FontSize',12);
 
-figure;
-plot(abs(fft(TransmittedSignal)),'LineWidth',1.2);
+figure(100);
+plot(freq,abs(fftshift(fft(TransmittedSignal))),'LineWidth',1.2);
+title('Final Transmitted Signal - Frequency Domain');
+xlabel('Frequency');
+ylabel('Magnitude');
+grid on;
+set(gca,'FontSize',12);
+
+% Burasi alinacak
+TransmittedSignal = TransmittedSignal + randn(size(TransmittedSignal,1), size(TransmittedSignal,2)) * 0.1;
+
+figure(102);
+plot(freq,abs(fftshift(fft(TransmittedSignal))),'LineWidth',1.2);
 title('Final Transmitted Signal - Frequency Domain');
 xlabel('Frequency');
 ylabel('Magnitude');
@@ -210,44 +261,50 @@ grid on;
 set(gca,'FontSize',12);
 
 ReceivedSignal = TransmittedSignal;
+% Burasi alinmayacak yani low pass'leme olmayacak burada
+% ReceivedSignal = smoothdata(ReceivedSignal,'movmean',5); % Kanalda eklenen gurultuyu kesmek icin konulan lowwpass filter
+
+figure(101);
+plot(freq,abs(fftshift(fft(ReceivedSignal))));
+title('fc Demodulation - Frequency Domain');
 
 Fs = 1e5;
 fc = 20000;
 fp = 1000;
 
 t = (0:length(ReceivedSignal)-1)/Fs;
-
-Carrier = sin(2*pi*fc*t);
+% Sen burayi sin yapmissin, burasi da cos olacak
+Carrier = cos(2*pi*fc*t);
 d = ReceivedSignal .* Carrier;
 
-%figure;
-%plot(t,d);
-%title('fc Demodulation - Time Domain');
+figure;
+plot(t,d);
+title('fc Demodulation - Time Domain');
 
-%figure;
-%plot(abs(fft(d)));
-%title('fc Demodulation - Frequency Domain');
+figure(500);
+plot(freq,abs(fftshift(fft(d))));
+title('fc Demodulation - Frequency Domain');
+% sen burayi 2100 yapmissin. cok dusuk bir deger, 10000'e cevir
+df = lowpass(d,10000,Fs);
 
-df = lowpass(d,2100,Fs);
+figure(501);
+plot(t,df);
+title('After First Lowpass - Time Domain');
 
-%figure;
-%plot(t,df);
-%title('After First Lowpass - Time Domain');
-
-%figure;
-%plot(abs(fft(df)));
-%title('After First Lowpass - Frequency Domain');
+figure;
+plot(freq,abs(fftshift(fft(df))));
+title('After First Lowpass - Frequency Domain');
 
 PhaseCarrier = sin(2*pi*fp*t);
 p = df .* PhaseCarrier .* 2;
 
-%figure;
-%plot(t,p);
-%title('fp Demodulation - Time Domain');
+figure;
+plot(t,p);
+title('fp Demodulation - Time Domain');
 
-%figure;
-%plot(abs(fft(p)));
-%title('fp Demodulation - Frequency Domain');
+figure;
+plot(freq,abs(fftshift(fft(p))));
+title('fp Demodulation - Frequency Domain');
 
 pf = lowpass(p,1200,Fs);
 
@@ -260,8 +317,17 @@ grid on;
 set(gca,'FontSize',12);
 
 figure;
-plot(abs(fft(pf)),'LineWidth',1.2);
+plot(freq, abs(fftshift(fft(pf))),'LineWidth',1.2);
 title('Final Baseband Signal - Frequency Domain');
+xlabel('Frequency');
+ylabel('Magnitude');
+grid on;
+set(gca,'FontSize',12);
+
+
+figure;
+plot(freq, abs(fftshift(fft(phi))),'LineWidth',1.2);
+title('Input Signal - Frequency Domain');
 xlabel('Frequency');
 ylabel('Magnitude');
 grid on;
